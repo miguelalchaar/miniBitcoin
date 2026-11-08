@@ -10,6 +10,7 @@ public class Corretora
 
     public Carteira Carteira { get; }
     public Cotacao Cotacao { get; }
+    public Extrato Extrato { get; } = new();
 
     public Corretora(Carteira carteira, Cotacao cotacao)
     {
@@ -37,7 +38,9 @@ public class Corretora
         Carteira.DebitarBrl(valorBrl);
         Carteira.CreditarBtc(quantidadeBtc);
 
-        return new Transacao(TipoTransacao.Compra, valorBrl, quantidadeBtc, cotacao, DateTime.Now);
+        var transacao = new Transacao(TipoTransacao.Compra, valorBrl, quantidadeBtc, cotacao, DateTime.Now);
+        Extrato.Registrar(transacao);
+        return transacao;
     }
 
     /// <summary>
@@ -54,6 +57,8 @@ public class Corretora
         Carteira.DebitarBtc(quantidadeBtc);
         Carteira.CreditarBrl(valorBrl);
 
-        return new Transacao(TipoTransacao.Venda, valorBrl, quantidadeBtc, cotacao, DateTime.Now);
+        var transacao = new Transacao(TipoTransacao.Venda, valorBrl, quantidadeBtc, cotacao, DateTime.Now);
+        Extrato.Registrar(transacao);
+        return transacao;
     }
 }
