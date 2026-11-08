@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MiniBitcoin.Console/MiniBitcoin.Console.csproj" />
+  <Project Path="MiniBitcoin.Tests/MiniBitcoin.Tests.csproj" />
+</Solution>
