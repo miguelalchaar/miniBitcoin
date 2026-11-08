@@ -23,39 +23,41 @@ public class Carteira
 
     public void CreditarBrl(decimal valor)
     {
-        if (valor <= 0)
-            throw new ArgumentException("O valor deve ser maior que zero.", nameof(valor));
-
+        ValidarPositivo(valor, nameof(valor));
         SaldoBrl += valor;
     }
 
     public void CreditarBtc(decimal quantidade)
     {
-        if (quantidade <= 0)
-            throw new ArgumentException("A quantidade deve ser maior que zero.", nameof(quantidade));
-
+        ValidarPositivo(quantidade, nameof(quantidade));
         SaldoBtc += quantidade;
     }
 
     public void DebitarBrl(decimal valor)
     {
-        if (valor <= 0)
-            throw new ArgumentException("O valor deve ser maior que zero.", nameof(valor));
+        ValidarPositivo(valor, nameof(valor));
 
         if (valor > SaldoBrl)
-            throw new SaldoInsuficienteException($"Saldo em BRL insuficiente: solicitado {valor}, disponível {SaldoBrl}.");
+            throw new SaldoInsuficienteException(
+                $"Saldo em BRL insuficiente: solicitado {Formatador.Moeda(valor)}, disponível {Formatador.Moeda(SaldoBrl)}.");
 
         SaldoBrl -= valor;
     }
 
     public void DebitarBtc(decimal quantidade)
     {
-        if (quantidade <= 0)
-            throw new ArgumentException("A quantidade deve ser maior que zero.", nameof(quantidade));
+        ValidarPositivo(quantidade, nameof(quantidade));
 
         if (quantidade > SaldoBtc)
-            throw new SaldoInsuficienteException($"Saldo em BTC insuficiente: solicitado {quantidade}, disponível {SaldoBtc}.");
+            throw new SaldoInsuficienteException(
+                $"Saldo em BTC insuficiente: solicitado {Formatador.Btc(quantidade)}, disponível {Formatador.Btc(SaldoBtc)}.");
 
         SaldoBtc -= quantidade;
+    }
+
+    private static void ValidarPositivo(decimal valor, string nomeParametro)
+    {
+        if (valor <= 0)
+            throw new ArgumentException("O valor deve ser maior que zero.", nomeParametro);
     }
 }

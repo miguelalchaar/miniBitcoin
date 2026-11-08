@@ -38,9 +38,7 @@ public class Corretora
         Carteira.DebitarBrl(valorBrl);
         Carteira.CreditarBtc(quantidadeBtc);
 
-        var transacao = new Transacao(TipoTransacao.Compra, valorBrl, quantidadeBtc, cotacao, DateTime.Now);
-        Extrato.Registrar(transacao);
-        return transacao;
+        return RegistrarTransacao(TipoTransacao.Compra, valorBrl, quantidadeBtc, cotacao);
     }
 
     /// <summary>
@@ -57,7 +55,12 @@ public class Corretora
         Carteira.DebitarBtc(quantidadeBtc);
         Carteira.CreditarBrl(valorBrl);
 
-        var transacao = new Transacao(TipoTransacao.Venda, valorBrl, quantidadeBtc, cotacao, DateTime.Now);
+        return RegistrarTransacao(TipoTransacao.Venda, valorBrl, quantidadeBtc, cotacao);
+    }
+
+    private Transacao RegistrarTransacao(TipoTransacao tipo, decimal valorBrl, decimal quantidadeBtc, decimal cotacao)
+    {
+        var transacao = new Transacao(tipo, valorBrl, quantidadeBtc, cotacao, DateTime.Now);
         Extrato.Registrar(transacao);
         return transacao;
     }
